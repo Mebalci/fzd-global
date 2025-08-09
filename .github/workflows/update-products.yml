@@ -5,7 +5,7 @@ on:
     - cron: "0 3 * * *"   # Her gün 06:00 (TRT, UTC+3) == 03:00 UTC
   workflow_dispatch:
   push:
-    branches: [ main ]     # master yerine main kullan
+    branches: [ main ]
 
 permissions:
   contents: write
@@ -33,9 +33,34 @@ jobs:
       - name: Install deps
         run: pip install requests
 
+      # 1️⃣ Önce key/secret/SupplierID çalışıyor mu test edelim
+      - name: Trendyol ping (debug)
+        run: |
+          python - <<'PY'
+          import os, base64, requests
+          key = os.getenv("TRENDYOL_API_KEY")
+          sec = os.getenv("TRENDYOL_API_SECRET")
+          sid = os.getenv("TRENDYOL_SUPPLIER_ID")
+          token = base64.b64encode(f"{key}:{sec}".encode()).decode()
+          headers = {
+              "Authorization": f"Basic {token}",
+              "Accept": "application/json",
+              "User-Agent": f"{sid} - GitHubActions"
+          }
+          url = f"https://api.trendyol.com/sapigw/suppliers/{sid}/addresses"
+          r = requests.get(url, headers=headers, timeout=20)
+          print("PING status:", r.status_code)
+          print("SupplierID:", sid)
+          print("Body (first 200):", r.text[:200])
+          if r.status_code != 200:
+              raise SystemExit("❌ Ping başarısız! API key/secret/SupplierID kontrol et.")
+          PY
+
+      # 2️⃣ Ürünleri çek (urun_tarayici.py içinde fallback desteği olmalı)
       - name: Fetch products from Trendyol
         run: python scripts/urun_tarayici.py
 
+      # 3️⃣ Değişiklik varsa commit et
       - name: Git status (add if new)
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
