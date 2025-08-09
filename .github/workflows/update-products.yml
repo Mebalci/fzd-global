@@ -18,7 +18,6 @@ env:
 jobs:
   sync:
     runs-on: ubuntu-22.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,35 +32,34 @@ jobs:
       - name: Install deps
         run: pip install requests
 
-      # 1️⃣ Önce key/secret/SupplierID çalışıyor mu test edelim
-      - name: Trendyol ping (debug)
+      # ✅ PING: Postman'da çalışanla aynı endpoint (integration/product/sellers)
+      - name: Trendyol ping (integration endpoint)
         run: |
           python - <<'PY'
           import os, base64, requests
-          key = os.getenv("TRENDYOL_API_KEY")
-          sec = os.getenv("TRENDYOL_API_SECRET")
-          sid = os.getenv("TRENDYOL_SUPPLIER_ID")
-          token = base64.b64encode(f"{key}:{sec}".encode()).decode()
+          key=os.getenv("TRENDYOL_API_KEY")
+          sec=os.getenv("TRENDYOL_API_SECRET")
+          sid=os.getenv("TRENDYOL_SUPPLIER_ID")
+          tok = base64.b64encode(f"{key}:{sec}".encode()).decode()
           headers = {
-              "Authorization": f"Basic {token}",
-              "Accept": "application/json",
-              "User-Agent": f"{sid} - GitHubActions"
+            "Authorization": f"Basic {tok}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
           }
-          url = f"https://api.trendyol.com/sapigw/suppliers/{sid}/addresses"
-          r = requests.get(url, headers=headers, timeout=20)
+          url = f"https://apigw.trendyol.com/integration/product/sellers/{sid}/products?approved=true&page=0&size=1"
+          r = requests.get(url, headers=headers, timeout=30)
           print("PING status:", r.status_code)
-          print("SupplierID:", sid)
-          print("Body (first 200):", r.text[:200])
+          # Log güvenliği için body'yi yazmıyoruz; headerları göstermek yeterli
+          print("Resp headers:", dict(r.headers))
           if r.status_code != 200:
-              raise SystemExit("❌ Ping başarısız! API key/secret/SupplierID kontrol et.")
+              raise SystemExit("❌ Ping başarısız! (integration endpoint) - key/secret/sellerId/yetkiyi kontrol et.")
           PY
 
-      # 2️⃣ Ürünleri çek (urun_tarayici.py içinde fallback desteği olmalı)
       - name: Fetch products from Trendyol
         run: python scripts/urun_tarayici.py
 
-      # 3️⃣ Değişiklik varsa commit et
-      - name: Git status (add if new)
+      - name: Detect changes
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git add -N public/urunler.json
@@ -78,6 +76,6 @@ jobs:
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add public/urunler.json
+          git add .
           git commit -m "chore: Trendyol ürünleri güncellendi ($(date -u +'%Y-%m-%dT%H:%M:%SZ'))"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{_
