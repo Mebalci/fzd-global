@@ -1,5 +1,5 @@
-export const urunleriGetir = async () => {
-  const response = await fetch("/urunler.json");
-  const data = await response.json();
+export async function urunleriGetir() {
+  const res = await fetch("/urunler.json", { cache: "no-store" });
+  const data = await res.json();
   return data.products || [];
-};
+}
