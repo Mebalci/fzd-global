@@ -16,11 +16,19 @@ def _headers():
     return {
         "Authorization": f"Basic {token}",
         "Accept": "application/json",
+        "Accept-Language": "tr-TR",
+        "Content-Type": "application/json",
         "User-Agent": f"{SUPPLIER_ID} - GitHubActions"
     }
 
+# 1) Yeni (sapigw) products GET
 PRIMARY_BASE = f"https://api.trendyol.com/sapigw/suppliers/{SUPPLIER_ID}/products"
-FALLBACK_BASE = f"https://api.trendyol.com/integration/product/sellers/{SUPPLIER_ID}/products"
+
+# 2) Dokümandaki integration host'u: apigw.trendyol.com
+FALLBACK_BASE = f"https://apigw.trendyol.com/integration/product/sellers/{SUPPLIER_ID}/products"
+
+# 3) İsteğe bağlı: stage (debug)
+STAGE_BASE = f"https://stageapigw.trendyol.com/integration/product/sellers/{SUPPLIER_ID}/products"
 
 def get_page(base_url, page, size):
     params = {"approved": "true", "page": page, "size": size}
@@ -29,8 +37,8 @@ def get_page(base_url, page, size):
     return r.json()
 
 def fetch_all():
-    # önce sapigw, 403/404 olursa integration'a düş
-    base_urls = [PRIMARY_BASE, FALLBACK_BASE]
+    # sırayla dene
+    base_urls = [PRIMARY_BASE, FALLBACK_BASE, STAGE_BASE]
     last_err = None
     for base in base_urls:
         try:
@@ -61,9 +69,9 @@ def fetch_all():
         except requests.HTTPError as e:
             last_err = e
             status = getattr(e.response, "status_code", "?")
-            print(f"⚠️  Endpoint fail ({status}): {base} -> denemeye devam...")
+            print(f"⚠️  Endpoint fail ({status}): {base} -> diğerini deniyorum...")
             continue
-    # ikisi de düştüyse net hata ver
+
     raise SystemExit(
         f"❌ Ürün çekme başarısız. Son hata: {last_err}\n"
         "Kontrol et:\n"
