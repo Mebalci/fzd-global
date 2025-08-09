@@ -78,4 +78,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git add .
           git commit -m "chore: Trendyol ürünleri güncellendi ($(date -u +'%Y-%m-%dT%H:%M:%SZ'))"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{_
+          # ${GITHUB_REPOSITORY} -> owner/repo (expression yok, parser karışmıyor)
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+
