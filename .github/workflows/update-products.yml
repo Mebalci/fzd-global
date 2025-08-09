@@ -3,12 +3,12 @@ name: Ürünleri Güncelle
 on:
   schedule:
     - cron: "0 3 * * *"   # Her gün 06:00 (TRT, UTC+3) == 03:00 UTC
-  push:
-    branches: [ master ]
   workflow_dispatch:
+  push:
+    branches: [ main ]     # master yerine main kullan
 
 permissions:
-  contents: write   # GITHUB_TOKEN'a repo yazma izni
+  contents: write
 
 env:
   TRENDYOL_API_KEY: ${{ secrets.TRENDYOL_API_KEY }}
@@ -16,47 +16,43 @@ env:
   TRENDYOL_SUPPLIER_ID: ${{ secrets.TRENDYOL_SUPPLIER_ID }}
 
 jobs:
-  build:
+  sync:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Kodu al
-      uses: actions/checkout@v3
-      with:
-        persist-credentials: false
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-    - name: Python kurulumu
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Gereksinimleri kur
-      run: pip install requests
+      - name: Install deps
+        run: pip install requests
 
-    - name: Ürün verisini çek
-      run: python scripts/urun_tarayici.py
+      - name: Fetch products from Trendyol
+        run: python scripts/urun_tarayici.py
 
-    - name: Değişiklik var mı?
-      id: diff
-      run: |
-        if git diff --quiet public/urunler.json; then
-          echo "changed=no" >> $GITHUB_OUTPUT
-        else
-          echo "changed=yes" >> $GITHUB_OUTPUT
-        fi
+      - name: Git status (add if new)
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git add -N public/urunler.json
+          if git diff --quiet -- public/urunler.json; then
+            echo "NO_CHANGES=1" >> $GITHUB_ENV
+          else
+            echo "NO_CHANGES=0" >> $GITHUB_ENV
+          fi
 
-    - name: Remote ile senkronize ol
-      run: |
-        git fetch origin
-        git pull origin master --rebase || true
-
-    - name: Değişiklikleri kaydet ve push et
-      if: steps.diff.outputs.changed == 'yes'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git config --global user.email "github-actions@github.com"
-        git config --global user.name "github-actions"
-        git add public/urunler.json
-        git commit -m "🔁 JSON güncellendi ($(date -u +'%Y-%m-%d %H:%M:%S') UTC)"
-        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:master
+      - name: Commit & push
+        if: env.NO_CHANGES == '0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add public/urunler.json
+          git commit -m "chore: Trendyol ürünleri güncellendi ($(date -u +'%Y-%m-%dT%H:%M:%SZ'))"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
