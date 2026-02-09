@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base: genel tipografi ve body */
+@layer base {
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-white text-steel-900 font-sans antialiased;
+  }
+
+  /* Başlıklarda display font */
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+/* Reusable UI: buton, kart, rozet, input */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold
+    transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/40;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-ink-950 hover:bg-accent-dark shadow-soft;
+  }
+
+  .btn-ghost {
+    @apply btn bg-white/0 text-white border border-white/30 hover:bg-white/10;
+  }
+
+  .btn-outline-dark {
+    @apply btn border border-steel-300 text-steel-900 hover:bg-steel-50;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white shadow-card border border-steel-200/60;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+  }
+
+  .badge-trendyol {
+    @apply badge bg-steel-100 text-steel-800;
+  }
+
+  .badge-custom {
+    @apply badge bg-wood-100 text-wood-900;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-steel-300 bg-white px-4 py-3 text-sm
+    placeholder:text-steel-400 focus:outline-none focus:ring-2 focus:ring-accent/35;
+  }
+
+  .label {
+    @apply mb-2 block text-sm font-semibold text-steel-700;
+  }
+
+  .section {
+    @apply py-16 md:py-20;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-extrabold text-steel-900;
+  }
+
+  .section-subtitle {
+    @apply mt-3 text-base md:text-lg text-steel-600;
+  }
+}
+
+/* Utility: hero arkaplan dokusu */
+@layer utilities {
+  .hero-surface {
+    @apply relative overflow-hidden bg-ink-900 text-white;
+    background-image: theme("backgroundImage.radial-soft"), theme("backgroundImage.grid-soft");
+    background-size: auto, theme("backgroundSize.grid-soft");
+  }
+}
+
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
