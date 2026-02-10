@@ -30,8 +30,8 @@ export function CartProvider({ children }) {
         title: urun.title,
         brand: urun.brand || "",
         price: urun.salePrice || urun.price,
-        // %5 indirim politikanıza göre sepette ödenecek fiyat:
-        discounted: Math.round((urun.salePrice || urun.price) * 0.95),
+        // %15 indirim politikanıza göre sepette ödenecek fiyat:
+        discounted: Math.round((urun.salePrice || urun.price) * 0.85),
         image: urun.images?.[0],
         qty: Math.min(qty, urun.quantity || 999),
         stock: urun.quantity ?? 999,

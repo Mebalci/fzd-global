@@ -63,7 +63,7 @@ export default function ProductDetail() {
   }, [location.state, id]);
 
   const formatPrice = (n) => new Intl.NumberFormat("tr-TR").format(n);
-  const discountedPrice = Math.round((urun?.salePrice || urun?.price) * 0.95);
+  const discountedPrice = Math.round((urun?.salePrice || urun?.price) * 0.85);
   const originalPrice = urun?.salePrice || urun?.price;
 
   const stockStatus =
@@ -108,7 +108,7 @@ export default function ProductDetail() {
           <div className="relative">
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
               <span className="bg-accent text-white px-4 py-2 rounded-full text-sm font-bold">
-                %5 İndirim
+                %15 İndirim
               </span>
               <span
                 className={`${stockColors[stockStatus]} text-white px-4 py-2 rounded-full text-sm font-bold`}

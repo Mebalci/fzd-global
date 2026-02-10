@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { pickCategorySlug, buildProductSlug } from "../utils/slugifyTR";
+
 
 export default function ProductCard({ urun }) {
   const [imageIndex, setImageIndex] = useState(0);
@@ -25,10 +27,10 @@ export default function ProductCard({ urun }) {
 
   const calculateDiscountedPrice = () => {
     const originalPrice = urun.salePrice || urun.price;
-    return Math.round(originalPrice * 0.95);
+    return Math.round(originalPrice * 0.85);
   };
 
-  const getDiscountPercentage = () => 5;
+  const getDiscountPercentage = () => 15;
 
   const getStockStatus = () => {
     if (urun.quantity <= 10) return "low";
@@ -43,9 +45,9 @@ export default function ProductCard({ urun }) {
   };
 
   const handleCardClick = () => {
-    navigate(`/urun/${urun.id || encodeURIComponent(urun.title)}`, {
-      state: { urun },
-    });
+  const kategoriSlug = pickCategorySlug(urun);
+  const urunSlug = buildProductSlug(urun);
+  navigate(`/urunler/${kategoriSlug}/${urunSlug}`, { state: { urun } });
   };
 
   const discountedPrice = calculateDiscountedPrice();
