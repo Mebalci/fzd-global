@@ -2,9 +2,9 @@ name: Ürünleri Güncelle
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # 03:00 UTC (TRT 06:00)
+    - cron: "0 3 * * *"   # 03:00 UTC (TR 06:00)
   push:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -16,42 +16,43 @@ env:
   TRENDYOL_SUPPLIER_ID: ${{ secrets.TRENDYOL_SUPPLIER_ID }}
 
 jobs:
-  build:
+  update-products:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Kodu al
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Kodu al
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Python kurulumu
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+      - name: Python kurulumu
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-    - name: Gereksinimleri kur
-      run: pip install requests
+      - name: Gereksinimleri kur
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
 
-    - name: Ürün verisini çek
-      run: python scripts/urun_tarayici.py
+      - name: Ürün verisini çek
+        run: python scripts/urun_tarayici.py
 
-    - name: Değişiklik var mı?
-      id: diff
-      run: |
-        if git diff --quiet public/urunler.json; then
-          echo "changed=no" >> $GITHUB_OUTPUT
-        else
-          echo "changed=yes" >> $GITHUB_OUTPUT
-        fi
+      - name: Değişiklik var mı?
+        id: diff
+        run: |
+          if git diff --quiet public/urunler.json; then
+            echo "changed=no" >> $GITHUB_OUTPUT
+          else
+            echo "changed=yes" >> $GITHUB_OUTPUT
+          fi
 
-    - name: Değişiklikleri kaydet ve push et
-      if: steps.diff.outputs.changed == 'yes'
-      run: |
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git config user.name "github-actions[bot]"
-        git add public/urunler.json
-        git commit -m "🔁 JSON güncellendi ($(date -u +'%Y-%m-%d %H:%M:%S') UTC)"
-        git pull --rebase origin master || true
-        git push origin HEAD:master
+      - name: Değişiklikleri kaydet ve push et
+        if: steps.diff.outputs.changed == 'yes'
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add public/urunler.json
+          git commit -m "🔁 JSON güncellendi ($(date -u +'%Y-%m-%d %H:%M:%S') UTC)"
+          git pull --rebase origin main || true
+          git push origin HEAD:main
