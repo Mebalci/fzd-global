@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">  
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://onrylmz.net/</loc>
-    <priority>1.00</priority>
   </url>
+
   <url>
     <loc>https://onrylmz.net/hizmetler</loc>
-    <priority>0.80</priority>
   </url>
+
   <url>
     <loc>https://onrylmz.net/portfolyo</loc>
-    <priority>0.75</priority>
   </url>
+
   <url>
     <loc>https://onrylmz.net/urunler</loc>
-    <priority>0.70</priority>
   </url>
+
   <url>
     <loc>https://onrylmz.net/iletisim</loc>
-    <priority>0.70</priority>
   </url>
+
   <url>
     <loc>https://onrylmz.net/gizlilik</loc>
-    <priority>0.60</priority>
   </url>
+
   <url>
     <loc>https://onrylmz.net/kullanim-sartlari</loc>
-    <priority>0.60</priority>
   </url>
+
 </urlset>
