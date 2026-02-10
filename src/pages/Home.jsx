@@ -15,6 +15,8 @@ import hzCnc from "../assets/hizmet-cnc.png";
 import hzLazer from "../assets/hizmet-lazer.png";
 import hzOzel from "../assets/hizmet-özel.png";
 
+import DiscountPopup from "../components/DiscountPopup";
+
 const BRAND = "ONRYLMZ";
 const PHONE_DISPLAY = "0554 544 52 01";
 const PHONE_E164 = "905545445201";
@@ -74,6 +76,7 @@ export default function Home() {
 
   return (
     <div className="bg-white">
+      <DiscountPopup percent={15} brand={BRAND} />
       {/* Sürüklenebilir WhatsApp butonu */}
       <FloatingWhatsApp phoneE164={PHONE_E164} />
 
