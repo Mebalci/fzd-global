@@ -175,21 +175,60 @@ export default function Footer() {
         <div className="mt-10 h-px w-full bg-white/10" />
 
         {/* BOTTOM (mobilde ortalı + alt alta) */}
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-sm text-white/55">
-          <div className="text-center sm:text-left">
-            © {year}{" "}
-            <span className="font-semibold text-white/70">{BRAND}</span>. Tüm
-            hakları saklıdır.
+        <div className="mt-6 text-sm text-white/55">
+          {/* Üst satır */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="text-center sm:text-left">
+              © {year}{" "}
+              <span className="font-semibold text-white/70">{BRAND}</span>. Tüm
+              hakları saklıdır.
+            </div>
+
+            <div className="flex items-center justify-center sm:justify-end gap-4">
+              <Link to="/gizlilik" className="hover:text-white/80 transition">
+                Gizlilik
+              </Link>
+              <span className="text-white/25">•</span>
+              <Link
+                to="/kullanim-sartlari"
+                className="hover:text-white/80 transition"
+              >
+                Kullanım
+              </Link>
+            </div>
           </div>
 
-          <div className="flex items-center justify-center sm:justify-end gap-4">
-            <Link to="/gizlilik" className="hover:text-white/80 transition">
-              Gizlilik
-            </Link>
-            <span className="text-white/25">•</span>
-            <Link to="/kullanim-sartlari" className="hover:text-white/80 transition">
-              Kullanım
-            </Link>
+          {/* YAZILIMCI BLOĞU */}
+          <div className="mt-8 flex justify-center">
+            <div className="relative text-center px-8 py-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-[0_20px_60px_-40px_rgba(0,0,0,0.8)]">
+              
+              {/* Glow Accent */}
+              <div
+                className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full opacity-20 blur-2xl pointer-events-none"
+                style={{
+                  background: "radial-gradient(circle, rgba(215,159,53,0.7), transparent 70%)",
+                }}
+              />
+
+              <div className="relative z-10">
+                <div className="text-[10px] tracking-[0.35em] text-white/40 mb-2">
+                  TASARIM & YAZILIM
+                </div>
+
+                <a
+                  href="https://mebalci.github.io/Kisisel-Profil/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-black tracking-wide text-white hover:text-[#d79f35] transition duration-300"
+                >
+                  Muhammed Emin Balcı
+                </a>
+
+                <div className="mt-2 text-xs text-white/40 tracking-wide">
+                  Full Stack Developer
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
