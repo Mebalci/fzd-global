@@ -1,7 +1,10 @@
+ "use client";
+
 import { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import FloatingWhatsApp from "../components/FloatingWhatsApp";
+import { buildProductSlug } from "../utils/slugifyTR";
 
 
 /* ---------- SVG ICONS ---------- */
@@ -41,26 +44,32 @@ const IconCart = ({ className }) => (
 );
 
 /* ---------- COMPONENT ---------- */
-export default function ProductDetail() {
-  const { id } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
+export default function ProductDetail({ id, urunSlug }) {
+  const router = useRouter();
   const [urun, setUrun] = useState(null);
   const [imageIndex, setImageIndex] = useState(0);
   const { addToCart } = useCart();
 
   useEffect(() => {
-    if (location.state?.urun) {
-      setUrun(location.state.urun);
-    } else {
-      fetch("/urunler.json")
-        .then((res) => res.json())
-        .then((data) => {
-          const matching = data.products.find((p) => String(p.id) === String(id));
-          setUrun(matching || null);
-        });
-    }
-  }, [location.state, id]);
+    fetch("/urunler.json")
+      .then((res) => res.json())
+      .then((data) => {
+        const products = data?.products || [];
+        const matchingById = id
+          ? products.find((p) => String(p.id) === String(id))
+          : null;
+        if (matchingById) {
+          setUrun(matchingById);
+          return;
+        }
+        if (urunSlug) {
+          const matchingBySlug = products.find((p) => buildProductSlug(p) === urunSlug);
+          setUrun(matchingBySlug || null);
+          return;
+        }
+        setUrun(null);
+      });
+  }, [id, urunSlug]);
 
   const formatPrice = (n) => new Intl.NumberFormat("tr-TR").format(n);
   const discountedPrice = Math.round((urun?.salePrice || urun?.price) * 0.85);
@@ -96,7 +105,7 @@ export default function ProductDetail() {
       <div className="container mx-auto px-4">
         {/* BACK */}
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => router.back()}
           className="mb-6 inline-flex items-center gap-2 text-gray-600 hover:text-accent transition"
         >
           <IconArrowLeft className="w-5 h-5" />

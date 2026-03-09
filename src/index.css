@@ -12,7 +12,7 @@
     @apply bg-white text-steel-900 font-sans antialiased;
   }
 
-  /* Başlıklarda display font */
+  /* Balklarda display font */
   h1, h2, h3 {
     @apply font-display;
   }

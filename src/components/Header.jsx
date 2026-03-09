@@ -1,4 +1,7 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 
@@ -21,13 +24,15 @@ const navItems = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   const { count } = useCart(); 
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  const isActive = (to) => pathname === to || pathname?.startsWith(`${to}/`);
 
   return (
     <header className="sticky top-0 z-50">
@@ -64,10 +69,10 @@ export default function Header() {
       <div className="bg-white/80 backdrop-blur border-b border-steel-200/60">
         <div className="container mx-auto py-4 flex items-center justify-between gap-4">
           {/* Logo + Marka */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <div className="w-11 h-11 rounded-2xl bg-black flex items-center justify-center border border-wood-300 overflow-hidden shadow-md">
               <img
-                src={logo}
+                src={logo.src}
                 alt={`${BRAND} Logo`}
                 className="w-10 h-10 object-contain"
               />
@@ -85,20 +90,20 @@ export default function Header() {
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
-              <NavLink
+              <Link
                 key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
+                href={item.to}
+                className={
                   cx(
                     "px-4 py-2 rounded-xl text-sm font-semibold transition",
-                    isActive
+                    isActive(item.to)
                       ? "bg-wood-100 text-wood-900"
                       : "text-steel-700 hover:bg-steel-50 hover:text-steel-900"
                   )
                 }
               >
                 {item.label}
-              </NavLink>
+              </Link>
             ))}
           </nav>
 
@@ -106,7 +111,7 @@ export default function Header() {
           <div className="flex items-center gap-2">
             {/* Sepet */}
             <Link
-              to="/sepet"
+              href="/sepet"
               className="relative btn btn-outline-dark !px-4 !py-2"
               aria-label="Sepet"
             >
@@ -144,24 +149,24 @@ export default function Header() {
           <div className="lg:hidden border-t border-steel-200/60 bg-white">
             <div className="container mx-auto py-4 flex flex-col gap-2">
               {navItems.map((item) => (
-                <NavLink
+                <Link
                   key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
+                  href={item.to}
+                  className={
                     cx(
                       "px-4 py-3 rounded-xl text-sm font-semibold transition",
-                      isActive
+                      isActive(item.to)
                         ? "bg-wood-100 text-wood-900"
                         : "text-steel-700 hover:bg-steel-50 hover:text-steel-900"
                     )
                   }
                 >
                   {item.label}
-                </NavLink>
+                </Link>
               ))}
 
               <div className="pt-2 flex gap-2">
-                <Link to="/sepet" className="btn btn-outline-dark w-full">
+                <Link href="/sepet" className="btn btn-outline-dark w-full">
                   Sepeti Gör {count > 0 ? `(${count})` : ""}
                 </Link>
                 <a

@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+'use client';
+
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { urunleriGetir } from "../api";
@@ -7,13 +9,13 @@ import FloatingWhatsApp from "../components/FloatingWhatsApp";
 import lazerImg from "../assets/lazer.png";
 import logoWhite from "../assets/logo-onrylmz-beyaz.png";
 
-import özel from "../assets/1.png";
+import ozel from "../assets/1.png";
 import deco from "../assets/2.png";
 import taki from "../assets/3.png";
 
 import hzCnc from "../assets/hizmet-cnc.png";
 import hzLazer from "../assets/hizmet-lazer.png";
-import hzOzel from "../assets/hizmet-özel.png";
+import hzOzel from "../assets/hizmet-ozel.png";
 
 import DiscountPopup from "../components/DiscountPopup";
 
@@ -59,19 +61,19 @@ export default function Home() {
 
   // Hizmetler kutu görselleri 
   const serviceImages = [
-    hzCnc, // CNC
-    hzLazer, // LAZER
-    hzOzel, // ÖZEL
+    hzCnc.src, // CNC
+    hzLazer.src, // LAZER
+    hzOzel.src, // ÖZEL
   ];
 
   // Portfolyo kart görselleri 
   const portfolioImages = {
-    cncBuyuk: logoWhite,
-    lazerPanel: deco,
-    gravurLogo: logoWhite,
-    ozelUretim: özel,
-    kurumsal: taki,
-    kompleks: logoWhite,
+    cncBuyuk: logoWhite.src,
+    lazerPanel: deco.src,
+    gravurLogo: logoWhite.src,
+    ozelUretim: ozel.src,
+    kurumsal: taki.src,
+    kompleks: logoWhite.src,
   };
 
   return (
@@ -89,7 +91,7 @@ export default function Home() {
               {/* SOL */}
               <div className="relative lg:col-span-8 min-h-[520px] min-w-0">
                 <img
-                  src={lazerImg}
+                  src={lazerImg.src}
                   alt="ONRYLMZ Ankara CNC & Lazer Kesim"
                   className="absolute inset-0 h-full w-full object-cover object-center"
                   loading="eager"
@@ -136,7 +138,7 @@ export default function Home() {
                     </a>
 
                     <Link
-                      to="/hizmetler"
+                      href="/hizmetler"
                       className="inline-flex items-center justify-center rounded-full px-8 py-4 font-extrabold bg-white/90 text-black hover:bg-white transition"
                     >
                       Hizmetleri İncele
@@ -157,7 +159,7 @@ export default function Home() {
 
                 <div className="relative h-full flex flex-col items-center justify-center text-center px-8 py-10 min-w-0">
                   <img
-                    src={logoWhite}
+                    src={logoWhite.src}
                     alt="ONRYLMZ Logo"
                     className="w-[clamp(300px,26vw,520px)] max-w-[95%] h-auto drop-shadow-[0_30px_80px_rgba(0,0,0,0.75)]"
                   />
@@ -307,7 +309,7 @@ export default function Home() {
                 )}
 
                 <Link
-                  to="/hizmetler"
+                  href="/hizmetler"
                   className="inline-block mt-8 px-8 py-4 bg-black text-white font-bold hover:bg-[#d79f35] hover:text-black transition-all"
                 >
                   TÜM HİZMETLER →
@@ -362,7 +364,7 @@ export default function Home() {
                 Yapılan İşlerden Seçmeler
               </h2>
               <Link
-                to="/portfolyo"
+                href="/portfolyo"
                 className="px-6 py-3 border-2 border-white text-white font-bold hover:bg-white hover:text-black transition-all self-start lg:self-end"
               >
                 PORTFOLYO →
@@ -468,13 +470,13 @@ export default function Home() {
 
               <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/trendyol"
+                  href="/trendyol"
                   className="px-8 py-4 bg-black text-white font-bold hover:bg-[#d79f35] hover:text-black transition-all text-center"
                 >
                   TÜM ÜRÜNLER →
                 </Link>
                 <Link
-                  to="/sepet"
+                  href="/sepet"
                   className="px-8 py-4 border-2 border-black text-black font-bold hover:bg-black hover:text-white transition-all text-center"
                 >
                   SEPET
@@ -592,7 +594,7 @@ export default function Home() {
 
                   <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-3">
                     <img
-                      src={logoWhite}
+                      src={logoWhite.src}
                       alt={`${BRAND} logo`}
                       className="h-10 w-auto opacity-95"
                     />

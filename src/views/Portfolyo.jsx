@@ -1,73 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import FloatingWhatsApp from "../components/FloatingWhatsApp";
-import hzCnc from "../assets/hizmet-cnc.png";
-import hzLazer from "../assets/hizmet-lazer.png";
-import hzOzel from "../assets/hizmet-özel.png";
+'use client';
 
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import FloatingWhatsApp from "../components/FloatingWhatsApp";
+import { WORKS } from "../data/works";
 
 const PHONE_E164 = "905545445201";
 const ACCENT = "#d79f35";
-
-const SERVICES = [
-  {
-    id: "cnc",
-    slug: "cnc-mobilya-kesim",
-    tag: "CNC",
-    title: "CNC Mobilya Kesim",
-    subtitle: "MDF • Kontraplak • Masif",
-    image: hzCnc,
-    bullets: ["Montaja hazır parça kesimi", "Tekil & seri üretim", "Ölçüye özel kesim"],
-    detail:
-      "MDF, kontraplak ve masif ahşap malzemelerde ölçünüze uygun CNC kesim yapıyoruz. Dosya (DXF/PDF) veya ölçü ile üretime geçebiliriz.",
-    specs: [
-      { k: "Kalınlık", v: "3mm – 40mm" },
-      { k: "Format", v: "DXF / PDF" },
-      { k: "Üretim", v: "Tekil / Seri" },
-      { k: "Odak", v: "Temiz kenar" },
-    ],
-  },
-  {
-    id: "lazer",
-    slug: "lazer-kesim",
-    tag: "LAZER",
-    title: "Lazer Kesim",
-    subtitle: "İnce detay • dekoratif işler",
-    image: hzLazer,
-    bullets: ["İnce detay kesim", "Dekoratif üretim", "Hızlı prototip"],
-    detail:
-      "Ahşap ve pleksi gibi malzemelerde lazer kesim ile ince detaylı işler üretiyoruz. Dekoratif paneller, yazı/figür ve özel kesimler için uygundur.",
-    specs: [
-      { k: "Malzeme", v: "Ahşap / Pleksi" },
-      { k: "Detay", v: "İnce çizgiler" },
-      { k: "Uygulama", v: "Dekor / Pano" },
-      { k: "Süre", v: "Hızlı" },
-    ],
-  },
-  {
-    id: "ozel",
-    slug: "ozel-uretim",
-    tag: "ÖZEL",
-    title: "Özel Üretim",
-    subtitle: "Tasarımınız → Üretim",
-    image: hzOzel,
-    bullets: ["Ölçüye özel imalat", "Proje bazlı üretim", "Dosya optimizasyon desteği"],
-    detail:
-      "Özel ölçü üretimlerde tasarımınızı üretime çeviriyoruz. DXF/PDF ile ilerleyebilir veya ölçü üzerinden birlikte netleştirebiliriz.",
-    specs: [
-      { k: "Dosya", v: "DXF / PDF" },
-      { k: "Yaklaşım", v: "Proje bazlı" },
-      { k: "Destek", v: "Optimizasyon" },
-      { k: "Teslim", v: "Planlı" },
-    ],
-  },
-];
 
 function cx(...a) {
   return a.filter(Boolean).join(" ");
 }
 
-function ServiceRow({ s, activeRow, onClick }) {
+function PortfolioRow({ w, activeRow, onClick }) {
   return (
     <button
       onClick={onClick}
@@ -79,7 +24,7 @@ function ServiceRow({ s, activeRow, onClick }) {
     >
       <div className="flex items-center gap-3">
         <div className="w-14 h-14 rounded-2xl overflow-hidden border border-black/10 bg-white">
-          <img src={s.image} alt={s.title} className="w-full h-full object-cover" />
+          <img src={w.image} alt={w.title} className="w-full h-full object-cover" />
         </div>
 
         <div className="min-w-0 flex-1">
@@ -90,62 +35,60 @@ function ServiceRow({ s, activeRow, onClick }) {
             )}
             style={activeRow ? { backgroundColor: "rgba(215,159,53,0.18)" } : undefined}
           >
-            {s.tag}
+            {w.tag}
           </div>
 
-          <div className="mt-2 font-black leading-tight truncate text-black">{s.title}</div>
-          <div className="text-xs mt-1 truncate text-black/55">{s.subtitle}</div>
+          <div className="mt-2 font-black leading-tight truncate text-black">{w.title}</div>
+          <div className="text-xs mt-1 truncate text-black/55">{w.subtitle}</div>
         </div>
       </div>
     </button>
   );
 }
 
-export default function Hizmetler() {
-  const navigate = useNavigate();
-  const { slug } = useParams();
+export default function Portfolyo({ slug }) {
+  const router = useRouter();
 
-  const defaultService = SERVICES[0];
+  const defaultWork = WORKS[0];
 
-  const [activeId, setActiveId] = useState(defaultService.id);
+  const [activeId, setActiveId] = useState(defaultWork.id);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-   
   useEffect(() => {
     if (!slug) {      
-      setActiveId(defaultService.id);
+      setActiveId(defaultWork.id);
       return;
     }
 
-    const found = SERVICES.find((s) => s.slug === slug);
+    const found = WORKS.find((w) => w.slug === slug);
     if (found) setActiveId(found.id);
-    else navigate(`/hizmetler/${defaultService.slug}`, { replace: true });
+    else router.replace(`/portfolyo/${defaultWork.slug}`);
   }, [slug]);
 
   const active = useMemo(
-    () => SERVICES.find((x) => x.id === activeId) || defaultService,
+    () => WORKS.find((x) => x.id === activeId) || defaultWork,
     [activeId]
   );
 
-  const onPick = (s) => {
-    setActiveId(s.id);
+  const onPickWork = (w) => {
+    setActiveId(w.id);
     setDrawerOpen(false);
-    navigate(`/hizmetler/${s.slug}`);
+    router.push(`/portfolyo/${w.slug}`);
   };
 
   const waText = encodeURIComponent(
-    `Merhaba, "${active.title}" hizmeti için teklif almak istiyorum. Dosya/ölçü paylaşacağım.`
+    `Merhaba, "${active.title}" işine benzer bir proje için fiyat almak istiyorum.`
   );
 
   const ListContent = ({ onPickDone }) => (
     <div className="p-3 space-y-2">
-      {SERVICES.map((s) => (
-        <ServiceRow
-          key={s.id}
-          s={s}
-          activeRow={s.id === activeId}
+      {WORKS.map((w) => (
+        <PortfolioRow
+          key={w.id}
+          w={w}
+          activeRow={w.id === activeId}
           onClick={() => {
-            onPick(s);
+            onPickWork(w);
             onPickDone?.();
           }}
         />
@@ -165,7 +108,7 @@ export default function Hizmetler() {
             onClick={() => setDrawerOpen(true)}
             className="lg:hidden shrink-0 rounded-2xl border border-black/10 px-4 py-3 font-black hover:bg-black/5 transition"
           >
-            Hizmet Seç ☰
+            İş Seç ☰
           </button>
         </div>
       </div>
@@ -175,7 +118,7 @@ export default function Hizmetler() {
           <aside className="hidden lg:block lg:col-span-4">
             <div className="rounded-3xl border border-black/10 bg-white overflow-hidden">
               <div className="p-5 border-b border-black/5">
-                <div className="text-sm font-black">Hizmet Listesi</div>
+                <div className="text-sm font-black">Portfolyo Listesi</div>
               </div>
               <ListContent />
             </div>
@@ -204,20 +147,31 @@ export default function Hizmetler() {
                   </div>
 
                   <h1 className="mt-3 text-3xl md:text-4xl font-black text-white">{active.title}</h1>
-                  <p className="mt-3 text-white/80 max-w-2xl">{active.detail}</p>
+                  <p className="mt-3 text-white/80 max-w-2xl">{active.summary}</p>
                 </div>
               </div>
 
               <div className="p-6 md:p-10 grid md:grid-cols-2 gap-8">
                 <div>
-                  <div className="text-sm font-black">Öne çıkanlar</div>
+                  <div className="text-sm font-black">İş kapsamı</div>
                   <div className="mt-4 space-y-3">
-                    {active.bullets.map((b, i) => (
+                    {active.scope.map((b, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <span className="mt-1 w-2.5 h-2.5 rounded-full" style={{ backgroundColor: ACCENT }} />
                         <span className="text-black/75">{b}</span>
                       </div>
                     ))}
+                  </div>
+
+                  <div className="mt-7">
+                    <div className="text-sm font-black">Öne çıkanlar</div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {active.highlights.map((h, i) => (
+                        <span key={i} className="rounded-full px-3 py-2 text-xs font-black border border-black/10 bg-white">
+                          {h}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
                   <a
@@ -227,26 +181,40 @@ export default function Hizmetler() {
                     className="mt-7 inline-flex w-full items-center justify-center rounded-2xl px-6 py-4 font-black text-black hover:brightness-110 transition"
                     style={{ backgroundColor: ACCENT }}
                   >
-                    WhatsApp’tan Teklif Al
+                    Benzer Proje İçin Teklif Al
                   </a>
                 </div>
 
-                <div>
-                  <div className="text-sm font-black">Detaylar</div>
-                  <div className="mt-4 grid grid-cols-2 gap-3">
-                    {active.specs.map((s, i) => (
-                      <div key={i} className="rounded-2xl border border-black/10 p-4 bg-white">
-                        <div className="text-[11px] font-bold tracking-wider text-black/50">{s.k.toUpperCase()}</div>
-                        <div className="mt-2 font-black">{s.v}</div>
-                      </div>
-                    ))}
+                <div className="space-y-7">
+                  <div>
+                    <div className="text-sm font-black">Malzemeler</div>
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      {active.materials.map((m, i) => (
+                        <div key={i} className="rounded-2xl border border-black/10 p-4 bg-white">
+                          <div className="text-[11px] font-bold tracking-wider text-black/50">MALZEME</div>
+                          <div className="mt-2 font-black">{m}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-sm font-black">Üretim adımları</div>
+                    <div className="mt-4 space-y-3">
+                      {active.process.map((p, i) => (
+                        <div key={i} className="rounded-2xl border border-black/10 p-4 bg-white flex items-start justify-between gap-4">
+                          <div className="font-black">{p.k}</div>
+                          <div className="text-black/65 text-sm text-right">{p.v}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="lg:hidden mt-4 text-xs text-black/50">
-              Hizmet değiştirmek için “Hizmet Seç” menüsünü kullanın.
+              İş değiştirmek için “İş Seç” menüsünü kullanın.
             </div>
           </main>
         </div>
@@ -264,8 +232,8 @@ export default function Hizmetler() {
         <div className="fixed z-[9999] top-0 right-0 h-full w-[92%] max-w-[420px] bg-white shadow-2xl border-l border-black/10 flex flex-col">
           <div className="p-5 border-b border-black/10 flex items-center justify-between">
             <div>
-              <div className="text-sm font-black">Hizmet Seç</div>
-              <div className="text-xs text-black/50 mt-1">Listeden bir hizmet seçin</div>
+              <div className="text-sm font-black">İş Seç</div>
+              <div className="text-xs text-black/50 mt-1">Portfolyodan bir iş seçin</div>
             </div>
             <button
               type="button"
@@ -288,7 +256,7 @@ export default function Hizmetler() {
               className="w-full inline-flex items-center justify-center rounded-2xl px-6 py-4 font-black text-black"
               style={{ backgroundColor: ACCENT }}
             >
-              Seçili Hizmet İçin Teklif Al →
+              Seçili İş İçin Teklif Al →
             </a>
           </div>
         </div>

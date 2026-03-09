@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+'use client';
+
+import Link from "next/link";
 
 const updatedAt = new Date().toLocaleDateString("tr-TR");
 
@@ -17,7 +19,7 @@ export default function Terms() {
             </div>
 
             <div className="flex items-center gap-2 text-sm">
-              <Link to="/" className="text-gray-500 hover:text-gray-900">
+              <Link href="/" className="text-gray-500 hover:text-gray-900">
                 Anasayfa
               </Link>
               <span className="text-gray-300">/</span>
@@ -123,12 +125,12 @@ export default function Terms() {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Link to="/iletisim" className="btn btn-primary justify-center">
+                    <Link href="/iletisim" className="btn btn-primary justify-center">
                       <i className="fas fa-comment-dots"></i>
                       İletişime Geç
                     </Link>
 
-                    <Link to="/gizlilik" className="btn btn-outline justify-center">
+                    <Link href="/gizlilik" className="btn btn-outline justify-center">
                       Gizlilik Politikası
                     </Link>
                   </div>

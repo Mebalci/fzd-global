@@ -10,7 +10,7 @@ export const WORKS = [
     title: "Özel Mobilya Parçaları",
     slug: "cnc-ozel-parca",
     subtitle: "MDF / Kontraplak kesim",
-    image: logoForCards,
+    image: logoForCards.src,
     summary:
       "Ölçüye özel parça kesimleri, montaja hazır setler ve seri üretime uygun CNC işlemleri.",
     highlights: ["Ölçüye özel", "Montaja hazır", "Seri üretim"],
@@ -32,7 +32,7 @@ export const WORKS = [
     title: "Dekoratif Panel",
     slug: "lazer-dekoratif-panel",
     subtitle: "İnce detay lazer kesim",
-    image: deco,
+    image: deco.src,
     summary:
       "Dekoratif paneller, yazı/figür ve ince detay gerektiren lazer kesim işler.",
     highlights: ["İnce detay", "Dekoratif", "Hızlı prototip"],
@@ -54,7 +54,7 @@ export const WORKS = [
     title: "Logo & Markalama",
     slug: "gravur-logo-markalama",
     subtitle: "Ahşap üzerine gravür",
-    image: özel,
+    image: özel.src,
     summary:
       "Kurumsal logo, yazı ve markalama uygulamaları. Tekil veya seri işler.",
     highlights: ["Net işaretleme", "Kurumsal", "Tekrar edilebilir kalite"],
@@ -76,7 +76,7 @@ export const WORKS = [
     title: "Takı Dolabı Üretimi",
     slug: "ahsap-taki-dolabi",
     subtitle: "Özel ölçü imalat",
-    image: taki,
+    image: taki.src,
     summary:
       "Ölçüye özel takı dolabı üretimleri: kesim, parça hazırlığı ve proje bazlı üretim.",
     highlights: ["Özel ölçü", "Proje bazlı", "Fonksiyonel çözüm"],

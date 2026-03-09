@@ -1,5 +1,5 @@
 User-agent: *
 Disallow:
 
-# Sitemizin sitemap dosyasının konumunu belirtin
-Sitemap: https://onrylmz.com/sitemap.xml
+# Sitemizin sitemap dosyasnn konumunu belirtin
+Sitemap: https://onrylmz.net/sitemap.xml

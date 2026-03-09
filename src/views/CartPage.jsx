@@ -1,6 +1,8 @@
+'use client';
+
 import { useMemo } from "react";
 import { useCart } from "../context/CartContext";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const BRAND = "ONRYLMZ";
 const PHONE_E164 = "905545445201";
@@ -56,7 +58,7 @@ export default function CartPage() {
             Henüz sepete ürün eklemediniz.
           </p>
           <Link
-            to="/urunler"
+            href="/urunler"
             className="inline-flex items-center justify-center px-8 py-4 bg-black text-white font-bold rounded-xl hover:bg-gray-900"
           >
             Ürünlere Git →

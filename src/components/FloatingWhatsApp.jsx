@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useMemo, useRef, useState } from "react";
 
 function clamp(n, min, max) {
@@ -11,7 +13,7 @@ export default function FloatingWhatsApp({ phoneE164 }) {
   const SIZE = 64;
   const MARGIN = 20;
 
-  // ✅ Her zaman sağ-alt başlangıç (right/bottom)
+  // o. Her zaman saY-alt baYlang (right/bottom)
   const defaultPos = useMemo(() => {
     return { r: MARGIN, b: MARGIN }; // right, bottom
   }, []);
@@ -22,7 +24,7 @@ export default function FloatingWhatsApp({ phoneE164 }) {
     setPos(defaultPos);
   }, [defaultPos]);
 
-  // ✅ Mobilde viewport (adres çubuğu vs.) değişince de sığdır
+  // o. Mobilde viewport (adres ubuYu vs.) deYiYince de sYdr
   useEffect(() => {
     const fitToViewport = () => {
       setPos((p) => {
@@ -80,7 +82,7 @@ export default function FloatingWhatsApp({ phoneE164 }) {
       ref={btnRef}
       type="button"
       aria-label="WhatsApp ile teklif al"
-      // ✅ sağ-alt konumlandırma
+      // o. saY-alt konumlandrma
       style={{ right: pos.r, bottom: pos.b }}
       className="
         fixed z-[9999]
@@ -117,11 +119,11 @@ export default function FloatingWhatsApp({ phoneE164 }) {
         const vw = window.innerWidth;
         const vh = window.innerHeight;
 
-        // right/bottom mantığı:
-        // sağa sürüklemek => right azalır (dx +)
-        // sola sürüklemek => right artar
-        // aşağı sürüklemek => bottom azalır (dy +)
-        // yukarı sürüklemek => bottom artar
+        // right/bottom mantY:
+        // saYa srklemek => right azalr (dx +)
+        // sola srklemek => right artar
+        // aYaY srklemek => bottom azalr (dy +)
+        // yukar srklemek => bottom artar
         const nextR = drag.current.originR - dx;
         const nextB = drag.current.originB - dy;
 
@@ -141,7 +143,7 @@ export default function FloatingWhatsApp({ phoneE164 }) {
         drag.current.active = false;
         drag.current.pointerId = null;
 
-        // sürüklendiyse click açma
+        // srklendiyse click ama
         if (wasMoved) {
           e.preventDefault();
           e.stopPropagation();
@@ -159,3 +161,5 @@ export default function FloatingWhatsApp({ phoneE164 }) {
     </button>
   );
 }
+
+

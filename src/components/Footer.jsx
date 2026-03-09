@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import logoWhite from "../assets/logo-onrylmz-beyaz.png";
 
 const BRAND = "ONRYLMZ";
@@ -16,10 +16,10 @@ export default function Footer() {
         <div className="grid gap-10 lg:grid-cols-12">
           {/* BRAND */}
           <div className="lg:col-span-5">
-            <Link to="/" className="inline-flex items-center gap-3">
+            <Link href="/" className="inline-flex items-center gap-3">
               <div className="w-11 h-11 rounded-2xl bg-black flex items-center justify-center border border-white/10 overflow-hidden">
                 <img
-                  src={logoWhite}
+                  src={logoWhite.src}
                   alt={`${BRAND} Logo`}
                   className="w-8 h-8 object-contain"
                 />
@@ -71,22 +71,22 @@ export default function Footer() {
                 </div>
                 <ul className="space-y-3 text-white/75 font-semibold text-sm">
                   <li>
-                    <Link to="/" className="hover:text-white transition">
+                    <Link href="/" className="hover:text-white transition">
                       Anasayfa
                     </Link>
                   </li>
                   <li>
-                    <Link to="/hizmetler" className="hover:text-white transition">
+                    <Link href="/hizmetler" className="hover:text-white transition">
                       Hizmetler
                     </Link>
                   </li>
                   <li>
-                    <Link to="/portfolyo" className="hover:text-white transition">
+                    <Link href="/portfolyo" className="hover:text-white transition">
                       Portfolyo
                     </Link>
                   </li>
                   <li>
-                    <Link to="/iletisim" className="hover:text-white transition">
+                    <Link href="/iletisim" className="hover:text-white transition">
                       İletişim
                     </Link>
                   </li>
@@ -185,12 +185,12 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center justify-center sm:justify-end gap-4">
-              <Link to="/gizlilik" className="hover:text-white/80 transition">
+              <Link href="/gizlilik" className="hover:text-white/80 transition">
                 Gizlilik
               </Link>
               <span className="text-white/25">•</span>
               <Link
-                to="/kullanim-sartlari"
+                href="/kullanim-sartlari"
                 className="hover:text-white/80 transition"
               >
                 Kullanım

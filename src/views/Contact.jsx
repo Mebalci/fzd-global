@@ -1,3 +1,5 @@
+'use client';
+
 import FloatingWhatsApp from "../components/FloatingWhatsApp";
 import logoWhite from "../assets/logo-onrylmz-beyaz.png";
 
@@ -137,7 +139,7 @@ export default function Contact() {
           {/* SAĞ KUTU */}
           <div className="rounded-3xl border border-black/10 p-10 bg-black text-white">
             <img
-              src={logoWhite}
+              src={logoWhite.src}
               alt={`${BRAND} logo`}
               className="h-12 w-auto mb-8 opacity-95"
             />

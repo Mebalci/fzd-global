@@ -1,0 +1,6 @@
+import CartPage from '../../src/views/CartPage';
+
+export default function Page() {
+  return <CartPage />;
+}
+

@@ -1,12 +1,14 @@
+'use client';
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { pickCategorySlug, buildProductSlug } from "../utils/slugifyTR";
 
 
 export default function ProductCard({ urun }) {
   const [imageIndex, setImageIndex] = useState(0);
-  const navigate = useNavigate();
+  const router = useRouter();
   const { addToCart } = useCart();
 
   if (!urun || urun.quantity === 0) return null;
@@ -32,34 +34,15 @@ export default function ProductCard({ urun }) {
 
   const getDiscountPercentage = () => 15;
 
-  const getStockStatus = () => {
-    if (urun.quantity <= 10) return "low";
-    if (urun.quantity <= 50) return "medium";
-    return "high";
-  };
-
-  const getStockText = () => {
-    if (urun.quantity <= 10) return `Son ${urun.quantity} adet`;
-    if (urun.quantity <= 50) return "Sınırlı stok";
-    return "Stokta var";
-  };
 
   const handleCardClick = () => {
   const kategoriSlug = pickCategorySlug(urun);
   const urunSlug = buildProductSlug(urun);
-  navigate(`/urunler/${kategoriSlug}/${urunSlug}`, { state: { urun } });
+  router.push(`/urunler/${kategoriSlug}/${urunSlug}`);
   };
 
   const discountedPrice = calculateDiscountedPrice();
   const originalPrice = urun.salePrice || urun.price;
-  const stockStatus = getStockStatus();
-  const stockText = getStockText();
-
-  const stockColors = {
-    high: "bg-green-500",
-    medium: "bg-yellow-500",
-    low: "bg-red-500",
-  };
 
   return (
     <div
@@ -79,7 +62,7 @@ export default function ProductCard({ urun }) {
             {/* Badges (same alignment) */}
             <div className="absolute top-3 left-3 flex flex-col gap-2 z-10 pointer-events-none">
               <span className="bg-accent text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm">
-                %{getDiscountPercentage()} İndirim
+                %{getDiscountPercentage()} Indirim
               </span>              
             </div>
 
