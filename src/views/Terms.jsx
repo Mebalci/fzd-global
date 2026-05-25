@@ -93,7 +93,7 @@ export default function Terms() {
                 <section id="hizmet" className="scroll-mt-28">
                   <h2 className="text-xl font-extrabold text-gray-900 mb-3">1) Hizmet Tanımı</h2>
                   <p className="text-gray-700 leading-relaxed">
-                    Özkan Wood, ürünlerini tanıtmak ve WhatsApp üzerinden sipariş/iletişim sürecini kolaylaştırmak amacıyla hizmet verir.
+                    Onrylmz, ürünlerini tanıtmak ve WhatsApp üzerinden sipariş/iletişim sürecini kolaylaştırmak amacıyla hizmet verir.
                   </p>
                 </section>
 
