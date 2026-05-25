@@ -98,7 +98,7 @@ export default function PrivacyPolicy() {
               {/* Header */}
               <div className="p-6 md:p-8 border-b border-gray-200 bg-[radial-gradient(circle_at_top,rgba(255,107,53,0.08),transparent_55%)]">
                 <p className="text-gray-600 leading-relaxed">
-                  Özkan Wood olarak gizliliğinize önem veriyoruz. Bu sayfa, sitemizi kullandığınızda
+                 Onrylmz olarak gizliliğinize önem veriyoruz. Bu sayfa, sitemizi kullandığınızda
                   hangi verileri hangi amaçlarla işlediğimizi açıklar.
                 </p>
               </div>
